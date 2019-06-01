@@ -126,7 +126,7 @@ public abstract class Mobile  extends Element implements IMobile {
     private void setHasMoved() {
       this.getMap().setMobileHasChanged();
     }
-    public void digDirt() {
+    public void dig() {
 		this.getMap().setOnTheMapXY(this.getX(), this.getY(), MotionlessElementFactory.createBackground() );
 		try {
 			this.getMap().getOnTheMapXY(getX(), getY()).getSprite().loadImage();

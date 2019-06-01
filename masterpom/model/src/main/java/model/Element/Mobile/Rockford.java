@@ -43,6 +43,7 @@ public class Rockford extends Mobile {
 	public void moveDown() {
 		// TODO Auto-generated method stub
 		super.moveDown();
+		super.dig();
 		this.setSprite(spriteTurnRight);
 	}
 	
@@ -50,18 +51,21 @@ public class Rockford extends Mobile {
 	public void moveRight() {
 		// TODO Auto-generated method stub
 		super.moveRight();
+		super.dig();
 		this.setSprite(spriteTurnRight);
 	}
 	@Override
 	public void moveUp() {
 		// TODO Auto-generated method stub
 		super.moveUp();
+		super.dig();
 		this.setSprite(spriteUp);
 	}
 	@Override
 	public void moveLeft() {
 		// TODO Auto-generated method stub
 		super.moveLeft();
+		super.dig();
 		this.setSprite(spriteTurnLeft);
 	}
 @Override

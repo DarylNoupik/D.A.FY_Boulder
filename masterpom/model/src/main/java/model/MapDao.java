@@ -11,7 +11,7 @@ import model.Element.MotionlessElement.MotionlessElementFactory;
 public class MapDao extends AbstractDAO {
 
 	/** The sql map by id. */
-	private static String sqlMapById = "{call getMapByID(?)}";
+	private static String sqlMapById = "{call prolevel3}";
 
 	/** The id column index. */
 	// private static int idColumnIndex = 1;

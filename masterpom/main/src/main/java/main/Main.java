@@ -33,7 +33,7 @@ public abstract class Main {
 	    
     public static void main(final String[] args) throws IOException, InterruptedException, SQLException {
         
-    	String idToAsk= JOptionPane.showInputDialog("Hello ! Please input id of the map : ", 1);
+    	String idToAsk= JOptionPane.showInputDialog("Hello , We are the group D.A.F.Y ! Please input id of the map : ", 1);
         int idAsked = Integer.parseInt(idToAsk);
         
     	final Model model = new Model(idAsked);
