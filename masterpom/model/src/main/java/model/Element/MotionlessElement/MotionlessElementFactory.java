@@ -20,13 +20,13 @@ public class MotionlessElementFactory {
 	* 
 	* @return the motionlessElement
 	*/
-	public MotionlessElement createWall() {
+	public static MotionlessElement createWall() {
 	return wall;
 	}
-	public MotionlessElement createGround() {
+	public static  MotionlessElement createGround() {
 	return ground;
 	}
-	public MotionlessElement createBackground() {
+	public static MotionlessElement createBackground() {
 	return background ;
 	}
 	/**

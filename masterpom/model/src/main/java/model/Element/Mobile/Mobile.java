@@ -3,12 +3,15 @@ package model.Element.Mobile;
 //import java.awt.Image;
 
 import java.awt.Point;
+import java.io.IOException;
 
+import entity.IMap;
 import entity.IMobile;
 import entity.Permeability;
 import entity.Sprite;
 import fr.exia.showboard.IBoard;
 import model.Element.Element;
+import model.Element.MotionlessElement.MotionlessElementFactory;
 
 public abstract class Mobile  extends Element implements IMobile {
 
@@ -25,6 +28,10 @@ public abstract class Mobile  extends Element implements IMobile {
 
     /** The board. */
     private IBoard  board;
+    
+    private IMap map ;
+
+	private boolean fallSpeed = false;
 
     /**
      * Instantiates a new mobile.
@@ -36,9 +43,9 @@ public abstract class Mobile  extends Element implements IMobile {
      * @param permeability
      *            the permeability
      */
-    Mobile(final Sprite sprite,  final Permeability permeability) {
+    Mobile(final Sprite sprite,  final Permeability permeability, IMap map) {
         super(sprite, permeability);
-       
+        this.map = map;
         this.position = new Point();
     }
 
@@ -56,10 +63,10 @@ public abstract class Mobile  extends Element implements IMobile {
      * @param permeability
      *            the permeability
      */
-    Mobile(final int x, final int y, final Sprite sprite,  final Permeability permeability) {
-        this(sprite, permeability);
-        this.setX(x);
-        this.setY(y);
+    Mobile(final int x, final int y, final Sprite sprite,  final Permeability permeability,IMap map) {
+        this(sprite, permeability,map);
+        this.getPosition().x = x;
+        this.getPosition().y = y ;
     }
 
     /*
@@ -90,6 +97,7 @@ public abstract class Mobile  extends Element implements IMobile {
     public void moveDown() {
         this.setY(this.getY() + 1);
         this.setHasMoved();
+        this.fallSpeed  = true;
     }
 
     /*
@@ -109,16 +117,35 @@ public abstract class Mobile  extends Element implements IMobile {
     @Override
     public void doNothing() {
         this.setHasMoved();
+        this.fallSpeed = false;
     }
 
     /**
      * Sets the has moved.
      */
     private void setHasMoved() {
-      
+      this.getMap().setMobileHasChanged();
     }
+    public void digDirt() {
+		this.getMap().setOnTheMapXY(this.getX(), this.getY(), MotionlessElementFactory.createBackground() );
+		try {
+			this.getMap().getOnTheMapXY(getX(), getY()).getSprite().loadImage();
 
-    /*
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+    public IMap getMap() {
+		return map;
+	}
+
+	public void setMap(IMap map) {
+		this.map = map;
+	}
+
+	/*
      * (non-Javadoc)
      * @see fr.exia.insanevehicles.model.element.mobile.IMobile#getX()
      */

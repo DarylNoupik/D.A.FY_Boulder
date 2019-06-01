@@ -1,5 +1,6 @@
 package model.Element.Mobile;
 
+import java.awt.Rectangle;
 import java.io.IOException;
 
 import entity.IMap;
@@ -9,22 +10,32 @@ import entity.Sprite;
 public class Rockford extends Mobile {
 
 	 /** The Constant SPRITE. */
-    private static final Sprite sprite          = new Sprite('H', "perso.png");
+    private static final Sprite sprite          = new Sprite('H', Sprite.characterTileSet, new Rectangle(16, 0, 16, 16));
     
-    private static final Sprite spriteTurnLeft  = new Sprite('H', "persoLeft.png");
+    private static final Sprite spriteTurnLeft  = new Sprite('H',Sprite.characterTileSet,
+			new Rectangle(16, 16, 16, 16));
     
     /** The Constant spriteTurnRight. */
-    private static final Sprite spriteTurnRight = new Sprite('H', "persoRight.png");
+    private static final Sprite spriteTurnRight = new Sprite('H', Sprite.characterTileSet,
+			new Rectangle(16, 48, 16, 16));
     
     /** The Constant spriteUp. */
-    private static final Sprite spriteUp   = new Sprite('H', "persoUp.png");
+    private static final Sprite spriteUp   = new Sprite('H',Sprite.characterTileSet, new Rectangle(32, 80, 16, 16));
+    
+    /** The Constant spriteTurnDown. */
+	private static final Sprite spriteTurnDown = new Sprite('H', Sprite.characterTileSet,
+			new Rectangle(64, 16, 16, 16));
+	private static final Sprite spriteDie = new Sprite('H', Sprite.characterTileSet, new Rectangle(64, 0, 16, 16));
 	
 	
 	public Rockford(int x, int y, IMap map) throws IOException {
-		super(x, y, sprite, Permeability.BLOCKING);
+		super(x, y, sprite, Permeability.BLOCKING,map);
 		    spriteTurnLeft.loadImage();
 	        spriteTurnRight.loadImage();
 	        spriteUp.loadImage();
+	        spriteTurnDown.loadImage();
+			spriteDie.loadImage();
+			sprite.loadImage();
 		// TODO Auto-generated constructor stub
 	}
 	

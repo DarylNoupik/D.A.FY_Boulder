@@ -2,10 +2,11 @@ package view;
 
 import java.awt.Dimension;
 import java.awt.Rectangle;
-
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -28,7 +29,7 @@ public final class View implements IView, Runnable,KeyListener {
 	
 	
 	
-	private static final int  mapView = 10 ;
+	private static final int  mapView = Toolkit.getDefaultToolkit().getScreenSize().width ;
 	
 	private static final int squareSize = 50;
 	
@@ -42,7 +43,9 @@ public final class View implements IView, Runnable,KeyListener {
 	
 	private IOderPerformer orderPerformer;
 	
+	protected final BoardFrame boardFrame = new BoardFrame("BoulderDash");
 	
+	protected ArrayList<IMobile> pawns = null;
 	/** The frame. */
 	//private final ViewFrame viewFrame;
 
@@ -53,12 +56,13 @@ public final class View implements IView, Runnable,KeyListener {
 	 *          the model
 	 * @throws IOException 
 	 */
-	public View( IMap map , IMobile rockford) throws IOException {
+	public View( IMap map , IMobile rockford,ArrayList<IMobile> pawns) throws IOException {
 		this.setView(mapView);
 		this.setMap(map);
 		this.setRockford(rockford);
-		this.getRockford().getSprite().loadImage();
-		this.setCloseView(new Rectangle(0,this.getRockford().getY(),this.getMap().getWidth(),mapView));
+		//this.getRockford().getSprite().loadImage();
+		this.setPawns(pawns);
+		this.setCloseView(this.getReasonableViewPort());
 		
 		SwingUtilities.invokeLater(this);
 	}
@@ -99,6 +103,13 @@ public final class View implements IView, Runnable,KeyListener {
 	 *
 	 * @see java.lang.Runnable#run()
 	 */
+	public void updateBoardFrame() {
+		for (int x = 0; x < this.getMap().getWidth(); x++) {
+			for (int y = 0; y < this.getMap().getHeight(); y++) {
+				boardFrame.addSquare(this.map.getOnTheMapXY(x, y), x, y);
+			}
+		}
+	}
 	public void run() {
 		final BoardFrame board = new BoardFrame("Close view");
 		board.setDimension(new Dimension(this.getMap().getWidth(),this.getMap().getHeight()) );
@@ -114,6 +125,10 @@ public final class View implements IView, Runnable,KeyListener {
             }
         }
         board.addPawn(this.getRockford());
+        for (IMobile pawn : this.pawns) {
+			boardFrame.addPawn(pawn);
+		}
+
 
         this.getMap().getObservable().addObserver(board.getObserver());
         this.followRockford();
@@ -139,9 +154,21 @@ public final class View implements IView, Runnable,KeyListener {
 
 	@Override
 	public void followRockford() {
-		// TODO Auto-generated method stub
-	this.getCloseView().y = this.getRockford().getY()-1;	
+		this.getCloseView().y = (int) (this.rockford.getY() - (this.getCloseView().getHeight() / 2));
+		this.getCloseView().x = (int) (this.rockford.getX() - (this.getCloseView().getWidth() / 2));
+
+		if (this.rockford.getY() < this.getCloseView().getHeight() / 2) {
+			this.getCloseView().y = 0;
+		} else if (this.rockford.getY() > (this.map.getHeight() - (this.getCloseView().getHeight() / 2))) {
+			this.getCloseView().y = (int) (this.map.getHeight() - this.getCloseView().getHeight());
+		}
+		if (this.rockford.getX() < this.getCloseView().getWidth() / 2) {
+			this.getCloseView().x = 0;
+		} else if (this.rockford.getX() > (this.map.getWidth() - (this.getCloseView().getWidth() / 2))) {
+			this.getCloseView().x = (int) (this.map.getWidth() - this.getCloseView().getWidth());
+		}
 	}
+	
 
 	public Rectangle getCloseView() {
 		return closeView;
@@ -155,8 +182,13 @@ public final class View implements IView, Runnable,KeyListener {
 		return map;
 	}
 
-	public void setMap(IMap map) {
+	public void setMap(IMap map) throws IOException {
 		this.map = map;
+		for (int x = 0; x < this.getMap().getWidth(); x++) {
+			for (int y = 0; y < this.getMap().getHeight(); y++) {
+				this.getMap().getOnTheMapXY(x, y).getSprite().loadImage();
+			}
+		}
 	}
 
 	public IMobile getRockford() {
@@ -205,6 +237,37 @@ public final class View implements IView, Runnable,KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	protected Rectangle getReasonableViewPort() {
+		int reasonableWidth;
+		int reasonableHeight;
+
+		// First let's find a reasonable width
+		if ((int) (map.getWidth() * 0.75) > 10) {
+			reasonableWidth = 10;
+		} else if ((int) (map.getWidth() * 0.75) < 5) {
+			reasonableWidth = map.getWidth();
+		} else {
+			reasonableWidth = (int) (map.getWidth() * 0.75);
+		}
+
+		// Now the same with height
+		if ((int) (map.getHeight() * 0.75) > 10) {
+			reasonableHeight = 10;
+		} else if ((int) (map.getHeight() * 0.75) < 5) {
+			reasonableHeight = map.getHeight();
+		} else {
+			reasonableHeight = (int) (map.getHeight() * 0.75);
+		}
+
+		return new Rectangle(0, 0, reasonableWidth, reasonableHeight);
+	}
+
+	
+	protected void setPawns(final ArrayList<IMobile> newPawns) {
+		this.pawns = newPawns;
+	}
+
 	public final void show(final int yStart) {
         int y = yStart % this.getMap().getHeight();
         for (int view = 0; view < this.getView(); view++) {
@@ -225,5 +288,7 @@ public final class View implements IView, Runnable,KeyListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 }

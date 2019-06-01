@@ -1,6 +1,8 @@
 package entity;
 
 import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -8,6 +10,8 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 
+	/** The selected buffer. */
+	private BufferedImage buffer;
 	/** The image. */
     private Image   image;
 
@@ -28,39 +32,86 @@ public class Sprite {
      * @param imageName
      *            the image name
      */
-    public Sprite(final char character, final String imageName) {
-        this.setConsoleImage(character);
-        this.setImageName(imageName);
-    }
+    /** The part of buffer to keep. */
+	private Rectangle bufferPart;
+    /** The buffer for the character images */
+	public static BufferedImage characterTileSet = null;
 
-    /**
-     * Instantiates a new sprite.
-     *
-     * @param character
-     *            the character
-     */
-    public Sprite(final char character) {
-        this(character, "noimage.jpg");
-    }
+	/** The buffer for the map images */
+	public static BufferedImage mapTileSet = null;
 
-    /**
-     * Gets the image.
-     *
-     * @return the image
-     */
-    public final Image getImage() {
-        return this.image;
-    }
+	/**
+	 * Instantiates a new sprite.
+	 *
+	 * @param character
+	 *            the character
+	 * @param imageBuffer
+	 *            the buffer
+	 * 
+	 * @param part
+	 *            The part to crop from the buffer.
+	 */
+	public Sprite(final char character, final BufferedImage imageBuffer, final Rectangle part) {
+		this.setConsoleImage(character);
+		this.buffer = imageBuffer;
+		bufferPart = part;
+	}
 
-    /**
-     * Loads image.
-     *
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public final void loadImage() throws IOException {
-        this.setImage(ImageIO.read(new File("images/" + this.getImageName())));
-    }
+	/**
+	 * Loads the buffers for the characters and the map
+	 */
+	public static void loadBuffers() {
+		try {
+			int randomNum = (int) (Math.random() * 6);
+			Sprite.characterTileSet = ImageIO.read(new File("/main/Sprites/characterSet.png"));
+			Sprite.mapTileSet = ImageIO.read(new File("/main/Sprites/mapSet.png"));
+			Sprite.mapTileSet = Sprite.cropBuffer(Sprite.mapTileSet, randomNum);
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+			System.out.println("Working directory: " + System.getProperty("user.dir"));
+		}
+	}
+
+	/**
+	 * Crops a buffer
+	 * 
+	 * @param src
+	 *            The source buffer.
+	 * @param offset
+	 *            The offset.
+	 * @return The croppped buffer.
+	 */
+	private  static BufferedImage cropBuffer(final BufferedImage src, final int offset) {
+		BufferedImage img = new BufferedImage(16 * 11, 16 * 4, BufferedImage.TYPE_INT_RGB);
+
+		for (int currentXToWrite = 0; currentXToWrite < 16 * 11; currentXToWrite++) {
+			for (int currentYToWrite = 0, currentYToRead = offset * 16 * 4; currentYToWrite < 16 * 4; currentYToWrite++, currentYToRead++) {
+				int color = src.getRGB(currentXToWrite, currentYToRead);
+				img.setRGB(currentXToWrite, currentYToWrite, color);
+			}
+		}
+		return img;
+	}
+
+	/**
+	 * Gets the image.
+	 *
+	 * @return the image
+	 */
+	public final Image getImage() {
+		return this.image;
+	}
+
+	/**
+	 * Loads image.
+	 *
+	 * @throws IOException
+	 *             Signals that an I/O exception has occurred.
+	 */
+	public final void loadImage() throws IOException {
+		this.setImage(buffer.getSubimage(bufferPart.x, bufferPart.y, bufferPart.width, bufferPart.height));
+	}
 
     /**
      * Gets the console image.
@@ -98,16 +149,6 @@ public class Sprite {
      */
     public final String getImageName() {
         return this.imageName;
-    }
-
-    /**
-     * Sets the image name.
-     *
-     * @param imageName
-     *            the imageName to set
-     */
-    private void setImageName(final String imageName) {
-        this.imageName = imageName;
     }
 
     /**

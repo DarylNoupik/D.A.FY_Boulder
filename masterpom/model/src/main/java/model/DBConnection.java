@@ -1,7 +1,8 @@
 package model;
 
-import java.sql.Connection;
+import java.sql.*;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -15,7 +16,8 @@ final class DBConnection {
 
 	/** The connection. */
 	private Connection					connection;
-
+	/** The statement. */
+    private Statement                      statement;
 	/**
 	 * Instantiates a new DB connection.
 	 */
@@ -52,7 +54,73 @@ final class DBConnection {
 		}
 		return true;
 	}
+	  public static DBConnection getINSTANCE() {
+		return INSTANCE;
+	}
 
+	public static void setINSTANCE(DBConnection iNSTANCE) {
+		INSTANCE = iNSTANCE;
+	}
+
+	public Statement getStatement() {
+		return statement;
+	}
+
+	public void setStatement(Statement statement) {
+		this.statement = statement;
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+
+	/**
+     * Execute query.
+     *
+     * @param query
+     *            the query
+     * @return the result set
+     */
+    public ResultSet executeQuery(final String query) {
+        try {
+            return this.getStatement().executeQuery(query);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * Execute update.
+     *
+     * @param query
+     *            the query
+     * @return the int
+     */
+    public int executeUpdate(final String query) {
+        try {
+            return this.statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    
+    /**
+     * Prepare call.
+     *
+     * @param query
+     *            the query
+     * @return the java.sql. callable statement
+     */
+    public java.sql.CallableStatement prepareCall(final String query) {
+        try {
+            return this.getConnection().prepareCall(query);
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 	/**
 	 * Gets the connection.
 	 *

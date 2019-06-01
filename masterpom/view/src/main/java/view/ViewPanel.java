@@ -13,10 +13,16 @@ import javax.swing.JPanel;
  */
 class ViewPanel extends JPanel implements Observer {
 
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/** The view frame. */
-	private ViewFrame					viewFrame;
+//	private ViewFrame					viewFrame;
 	/** The Constant serialVersionUID. */
-	private static final long	serialVersionUID	= -998294702363713521L;
+//	private static final long	serialVersionUID	= -998294702363713521L;
 
 	/**
 	 * Instantiates a new view panel.
@@ -24,7 +30,7 @@ class ViewPanel extends JPanel implements Observer {
 	 * @param viewFrame
 	 *          the view frame
 	 */
-	public ViewPanel(final ViewFrame viewFrame) {
+	/*public ViewPanel(final ViewFrame viewFrame) {
 		this.setViewFrame(viewFrame);
 		viewFrame.getModel().getObservable().addObserver(this);
 	}
@@ -34,7 +40,7 @@ class ViewPanel extends JPanel implements Observer {
 	 *
 	 * @return the view frame
 	 */
-	private ViewFrame getViewFrame() {
+	/*private ViewFrame getViewFrame() {
 		return this.viewFrame;
 	}
 
@@ -44,7 +50,7 @@ class ViewPanel extends JPanel implements Observer {
 	 * @param viewFrame
 	 *          the new view frame
 	 */
-	private void setViewFrame(final ViewFrame viewFrame) {
+	/*private void setViewFrame(final ViewFrame viewFrame) {
 		this.viewFrame = viewFrame;
 	}
 
@@ -53,7 +59,7 @@ class ViewPanel extends JPanel implements Observer {
 	 *
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
 	 */
-	public void update(final Observable arg0, final Object arg1) {
+	/*public void update(final Observable arg0, final Object arg1) {
 		this.repaint();
 	}
 
@@ -62,9 +68,9 @@ class ViewPanel extends JPanel implements Observer {
 	 *
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
-	@Override
-	protected void paintComponent(final Graphics graphics) {
+	//@Override
+	/*protected void paintComponent(final Graphics graphics) {
 		graphics.clearRect(0, 0, this.getWidth(), this.getHeight());
 		graphics.drawString(this.getViewFrame().getModel().getHelloWorld().getMessage(), 10, 20);
-	}
+	}*/
 }

@@ -23,8 +23,9 @@ public interface IView {
     void displayMessage(String message);
 
     /**
-     * Follow myVehicle.
+     * Follow rockford.
      */
     void followRockford();
+	void updateBoardFrame();
 
 }

@@ -121,13 +121,20 @@ public final class Controller implements IController,IOderPerformer {
                     this.getModel().getRockford().doNothing();
                     break;
             }
+           
             this.clearStackOrder();
-            if (this.getModel().getRockford().isAlive()) {
-                this.getModel().getRockford().moveDown();
-            }
+            
             this.getView().followRockford();
         }
-        this.getView().displayMessage("CRASH !!!!!!!!!.");
+		this.getView().updateBoardFrame();
+
+	      if (this.getModel().getMap().getDiamondCount() == 0) {
+	        this.getView().displayMessage("You won !! Congratulations ;) ");
+	        System.exit(0);
+	      }
+	    
+	    this.getView().displayMessage("You are dead, GAME OVER. ");
+	    System.exit(0);
 	}
 
 	private IView getView() {

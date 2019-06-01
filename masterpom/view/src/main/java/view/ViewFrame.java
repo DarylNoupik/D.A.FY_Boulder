@@ -11,20 +11,39 @@ import javax.swing.JOptionPane;
 import contract.IController;
 import contract.IModel;
 
-/**
- * The Class ViewFrame.
- *
- * @author Jean-Aymeric Diet
- */
+
 class ViewFrame extends JFrame implements KeyListener {
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	/*private final static int HEIGHT=742;
+
+	 
+	private final static int WIDTH=1000;*/
 	/** The model. */
-	private IModel						model;
+	//private IModel						model;
 
 	/** The controller. */
-	private IController				controller;
+	//private IController				controller;
 	/** The Constant serialVersionUID. */
-	private static final long	serialVersionUID	= -697358409737458175L;
+	//private static final long	serialVersionUID	= -697358409737458175L;
 
 	/**
 	 * Instantiates a new view frame.
@@ -34,9 +53,9 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @throws HeadlessException
 	 *           the headless exception
 	 */
-	public ViewFrame(final IModel model) throws HeadlessException {
-		this.buildViewFrame(model);
-	}
+	//public ViewFrame(final IModel model) throws HeadlessException {
+		//this.buildViewFrame(model);
+	//}
 
 	/**
 	 * Instantiates a new view frame.
@@ -46,7 +65,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param gc
 	 *          the gc
 	 */
-	public ViewFrame(final IModel model, final GraphicsConfiguration gc) {
+	/*public ViewFrame(final IModel model, final GraphicsConfiguration gc) {
 		super(gc);
 		this.buildViewFrame(model);
 	}
@@ -61,7 +80,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @throws HeadlessException
 	 *           the headless exception
 	 */
-	public ViewFrame(final IModel model, final String title) throws HeadlessException {
+	/*public ViewFrame(final IModel model, final String title) throws HeadlessException {
 		super(title);
 		this.buildViewFrame(model);
 	}
@@ -76,7 +95,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param gc
 	 *          the gc
 	 */
-	public ViewFrame(final IModel model, final String title, final GraphicsConfiguration gc) {
+	/*public ViewFrame(final IModel model, final String title, final GraphicsConfiguration gc) {
 		super(title, gc);
 		this.buildViewFrame(model);
 	}
@@ -86,7 +105,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 *
 	 * @return the controller
 	 */
-	private IController getController() {
+	/*private IController getController() {
 		return this.controller;
 	}
 
@@ -96,7 +115,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param controller
 	 *          the new controller
 	 */
-	protected void setController(final IController controller) {
+	/*protected void setController(final IController controller) {
 		this.controller = controller;
 	}
 
@@ -105,7 +124,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 *
 	 * @return the model
 	 */
-	protected IModel getModel() {
+	/*protected IModel getModel() {
 		return this.model;
 	}
 
@@ -115,7 +134,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param model
 	 *          the new model
 	 */
-	private void setModel(final IModel model) {
+	/*private void setModel(final IModel model) {
 		this.model = model;
 	}
 
@@ -125,14 +144,18 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param model
 	 *          the model
 	 */
-	private void buildViewFrame(final IModel model) {
+	/*private void buildViewFrame(final IModel model) {
 		this.setModel(model);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("BoulderDash");
 		this.setResizable(false);
 		this.addKeyListener(this);
 		this.setContentPane(new ViewPanel(this));
-		this.setSize(400 + this.getInsets().left + this.getInsets().right, 60 + this.getInsets().top + this.getInsets().bottom);
+		//this.setSize(400 + this.getInsets().left + this.getInsets().right, 60 + this.getInsets().top + this.getInsets().bottom);
+		this.setSize(WIDTH,HEIGHT);
 		this.setLocationRelativeTo(null);
+		
+		System.out.println(ViewFrame.HEIGHT+" "+ViewFrame.WIDTH);
 	}
 
 	/**
@@ -141,7 +164,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @param message
 	 *          the message
 	 */
-	public void printMessage(final String message) {
+	/*public void printMessage(final String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
 
@@ -150,7 +173,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 *
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
-	public void keyTyped(final KeyEvent e) {
+	/*public void keyTyped(final KeyEvent e) {
 
 	}
 
@@ -159,7 +182,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 *
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
-	public void keyPressed(final KeyEvent e) {
+/*	public void keyPressed(final KeyEvent e) {
 		this.getController().orderPerform(View.keyCodeToControllerOrder(e.getKeyCode()));
 	}
 
@@ -168,7 +191,7 @@ class ViewFrame extends JFrame implements KeyListener {
 	 *
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
-	public void keyReleased(final KeyEvent e) {
+	/*public void keyReleased(final KeyEvent e) {
 
-	}
+	}*/
 }

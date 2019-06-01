@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,15 +25,24 @@ public class Map extends Observable implements IMap {
     /** The on the map. */
     private IElement[][] onTheMap;
 
+	private int diamondCount =0;
+
+	private ArrayList<IMobile> pawns;
+
+	
+
 
 /**
 * 
 * @param fileName
 * @throws IOException
 */
-public Map(String fileName) throws IOException {
+public Map(int wid , int heg , IElement[][] map ) throws IOException {
 super();
-this.loadFile(fileName);
+this.onTheMap = map ;
+this.width=wid;
+this.height=heg;
+this.pawns = new ArrayList<IMobile>();
 }
 
 
@@ -49,8 +59,21 @@ public Observable getObservable() {
 return null;
 }
 
+public final String toString() {
+    String temp = new String();
+    for (int y = 0; y < this.getHeight(); y++) {
+      for (int x = 0; x < this.getWidth(); x++) {
+        temp += onTheMap[x][y].getSprite().getConsoleImage();
+      }
+      temp += '\n';
+    }
+    return temp;
+  }
 public IElement getOnTheMapXY(final int x, final int y) {
-return this.onTheMap[x][y];
+	if(x >= 0 && x < this.getWidth() && y >= 0 && y < this.getHeight())
+    	return this.onTheMap[x][y];
+    else
+    	return this.onTheMap[0][0];
 }
 
 public void setOnTheMap(IElement onTheMap, final int x, final int y) {
@@ -78,13 +101,13 @@ private void loadFile( String fileName) throws IOException {
         String line;
         int y = 0;
         line = buffer.readLine();
-        this.setWidth(Integer.parseInt(line));
+        //this.setWidth(Integer.parseInt(line));
         line = buffer.readLine();
-        this.setHeight(Integer.parseInt(line));
-        this.onTheMap = new IElement[this.getWidth()][this.getHeight()];
+        //this.setHeight(Integer.parseInt(line));
+        this.onTheMap = new IElement[21][41];
         line = buffer.readLine();
         while (line != null) {
-            for (int x = 0; x < line.toCharArray().length; x++) {
+            for (int x = 0; x < 21; x++) {
                 this.setOnTheMap(MotionlessElementFactory.getFromFileSymbol(line.toCharArray()[x]), x, y);
             }
             line = buffer.readLine();
@@ -97,7 +120,7 @@ private void loadFile( String fileName) throws IOException {
 @Override
 public void setOnTheMapXY(int x, int y, IElement elem) {
 	// TODO Auto-generated method stub
-	
+	 this.onTheMap[x][y] = elem;
 }
 
 
@@ -118,21 +141,21 @@ public ArrayList<IMobile> getPawns() {
 @Override
 public void decreaseDiamondCount() {
 	// TODO Auto-generated method stub
-	
+	  this.setDiamondCount(this.getDiamondCount() - 1);
 }
 
 
 @Override
 public void addDiamondCount() {
 	// TODO Auto-generated method stub
-	
+	  this.setDiamondCount(this.getDiamondCount() + 1);
 }
 
 
 @Override
 public int getDiamondCount() {
 	// TODO Auto-generated method stub
-	return 0;
+	  return this.diamondCount;
 }
 
 
@@ -152,8 +175,21 @@ public void setMyCharacter(IMobile character) {
 
 @Override
 public Permeability getSquareIsOccupiedXY(int x, int y) {
-	// TODO Auto-generated method stub
-	return null;
+	 Point point = new Point(x, y);
+	    for(IMobile pawn : this.getPawns()) {
+	      if (pawn.getPosition().equals(point))
+	        return pawn.getPermeability();
+	    }
+	    if(this.getMyCharacter().getPosition().equals(point))
+	    	return this.getMyCharacter().getPermeability();
+	    
+	    return this.getOnTheMapXY(x, y).getPermeability();
+	  }
+
+
+
+public void setDiamondCount(int diamondCount) {
+	this.diamondCount = diamondCount;
 }
 
 

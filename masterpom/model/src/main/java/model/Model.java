@@ -2,12 +2,14 @@ package model;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Observable;
 
 import contract.IModel;
 import entity.HelloWorld;
 import entity.IMap;
 import entity.IMobile;
+import entity.Sprite;
 import model.Element.Mobile.Rockford;
 
 /**
@@ -92,19 +94,26 @@ public final class Model extends Observable implements IModel {
 	/**              */
 	private IMobile rockford ;
 
-	public Model( String fileName, int rockfordX,int rockfordY) throws IOException {
+	public Model( int mapID) throws IOException, SQLException {
 	super();
-	this.setMap(new Map(fileName));
-	this.setRockford(new Rockford (rockfordX,rockfordY,this.getMap()));
+	Sprite.loadBuffers();
+	this.setMap(MapDao.getMapById(mapID));
+	this.setRockford(new Rockford (1,1,this.getMap()));
 	}
 	public IMap getMap() {
 	return map;
 	}
 
+	
 	public void setMap(IMap map) {
 	this.map = map;
 	}
 
+	/**
+	 * Moves pawns (boulders, diamonds, ...).
+	 * Their movement is related to their strategy.
+	 */
+	
 	public IMobile getRockford() {
 	return rockford;
 	}

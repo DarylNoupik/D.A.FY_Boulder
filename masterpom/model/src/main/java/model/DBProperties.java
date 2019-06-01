@@ -18,13 +18,13 @@ class DBProperties extends Properties {
 	private final static String	PROPERTIES_FILE_NAME	= "model.properties";
 
 	/** The url. */
-	private String							url										= "";
+	private String							url										= "jdbc:mysql://localhost/jpublankproject?autoReconnect=true&useSSL=false";
 
 	/** The login. */
-	private String							login									= "";
+	private String							login									= "root";
 
 	/** The password. */
-	private String							password							= "";
+	private String							password							= " ";
 
 	/**
 	 * Instantiates a new DB properties.
