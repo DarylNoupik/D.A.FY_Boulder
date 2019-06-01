@@ -97,7 +97,7 @@ public final class Model extends Observable implements IModel {
 	public Model( int mapID) throws IOException, SQLException {
 	super();
 	Sprite.loadBuffers();
-	this.setMap(MapDao.getMapById(mapID));
+	this.setMap(MapDao.prolevel3(mapID));
 	this.setRockford(new Rockford (1,1,this.getMap()));
 	}
 	public IMap getMap() {
@@ -109,10 +109,7 @@ public final class Model extends Observable implements IModel {
 	this.map = map;
 	}
 
-	/**
-	 * Moves pawns (boulders, diamonds, ...).
-	 * Their movement is related to their strategy.
-	 */
+	
 	
 	public IMobile getRockford() {
 	return rockford;

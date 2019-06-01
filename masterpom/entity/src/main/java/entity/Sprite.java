@@ -63,8 +63,8 @@ public class Sprite {
 	public static void loadBuffers() {
 		try {
 			int randomNum = (int) (Math.random() * 6);
-			Sprite.characterTileSet = ImageIO.read(new File("/main/Sprites/characterSet.png"));
-			Sprite.mapTileSet = ImageIO.read(new File("/main/Sprites/mapSet.png"));
+			Sprite.characterTileSet = ImageIO.read(new File("C:\\Users\\daryl\\git\\D.A.FY_Boulder\\masterpom\\main\\Sprites/characterSet.png"));
+			Sprite.mapTileSet = ImageIO.read(new File("C:\\Users\\daryl\\git\\D.A.FY_Boulder\\masterpom\\main\\Sprites/mapSet.png"));
 			Sprite.mapTileSet = Sprite.cropBuffer(Sprite.mapTileSet, randomNum);
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -11,16 +11,18 @@ import model.Element.MotionlessElement.MotionlessElementFactory;
 public class MapDao extends AbstractDAO {
 
 	/** The sql map by id. */
-	private static String sqlMapById = "{call prolevel3}";
+	private static String sqlMapById = "{call prolevel3(?)}";
 
 	/** The id column index. */
 	// private static int idColumnIndex = 1;
 
-	/** The width column index. */
-	private static int widthColumnIndex = 2;
-
 	/** The height column index. */
-	private static int heightColumnIndex = 3;
+	private static int heightColumnIndex = 2;
+	
+	/** The width column index. */
+	private static int widthColumnIndex = 3;
+
+
 
 	/** The map column index. */
 	private static int mapColumnIndex = 4;
@@ -35,7 +37,7 @@ public class MapDao extends AbstractDAO {
 	 *             the SQL exception
 	 * @throws IOException
 	 */
-	public static Map getMapById(final int id) throws SQLException, IOException {
+	public static Map prolevel3( int id) throws SQLException, IOException {
 		final CallableStatement callStatement = prepareCall(sqlMapById);
 		callStatement.setInt(1, id);
 		int width = 0;
@@ -54,7 +56,7 @@ public class MapDao extends AbstractDAO {
 					System.out.println(e.getMessage());
 					System.exit(0);
 				}
-			//	tempMap = new Map(width, height, new IElement[width][height]);
+				tempMap = new Map(width, height, new IElement[width][height]);
 
 				MapDao.placePawnsOnMap(result, tempMap, width);
 			} else {
@@ -67,8 +69,12 @@ public class MapDao extends AbstractDAO {
 	}
 	
 	private static void testCorrectLevel(final int width, final int height, final String mapString) throws Exception {
+		System.out.println(width * height + height);
+		System.out.println(mapString.length());
 		if(width * height + height != mapString.length())
 			throw new Exception("Level is not good >:( x:" + width + " y: " + height + " size: " + mapString.length());
+		System.out.println(width * height + height);
+		System.out.println(mapString.length());
 	}
 
 	private static void placePawnsOnMap(final ResultSet result, final Map tempMap, int width) throws SQLException, IOException {
@@ -84,7 +90,7 @@ public class MapDao extends AbstractDAO {
 
 				// Now let's check if the element to insert is an IMobile
 				// (boulder, diamond..)
-				 if (c == '*') {
+				 if (c == 'D') {
 					tempMap.addPawn(new Diamond(currentXToWrite, currentYToWrite, tempMap));
 					tempMap.addDiamondCount();
 				} else if (c == 'M') {
